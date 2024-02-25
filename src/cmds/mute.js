@@ -10,6 +10,7 @@ module.exports = {
                     .setDescription("Which user would you like to mute?")
                     .setRequired(true)),
     async execute(interaction) {
-        interaction.reply("test")
+        const user = interaction.options.getUser('user')
+        interaction.reply(user)
     }    
 }
