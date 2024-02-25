@@ -10,7 +10,7 @@ module.exports = {
                     .setDescription("Which user would you like to mute?")
                     .setRequired(true)),
     async execute(interaction) {
-        interaction.reply(":thinking:")
+        await interaction.reply(":thinking:")
         const user = interaction.options.getUser('user')
         const userId = user.id
         interaction.editReply(`:white_check_mark: <@${userId}>`)
