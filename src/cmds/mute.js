@@ -32,13 +32,14 @@ module.exports = {
                 return interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
             }
 
-            if (user.id === moderator.id | user.bot) {
-                interaction.editReply(settings.verbose ? "You can't mute this user." : ':x:');
-                return
-            }
-
             try {
                 const settings = JSON.parse(data);
+
+                if (user.id === moderator.id | user.bot) {
+                    interaction.editReply(settings.verbose ? "You can't mute this user." : ':x:');
+                    return
+                }
+
                 try {
                     action(member); 
                     interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
