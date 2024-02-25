@@ -11,6 +11,7 @@ module.exports = {
                     .setRequired(true)),
     async execute(interaction) {
         const user = interaction.options.getUser('user')
+        console.log(user)
         interaction.reply(user)
     }    
 }
