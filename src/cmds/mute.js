@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
+const action = require('../modules/actions/mute-action')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,5 +15,6 @@ module.exports = {
         const user = interaction.options.getUser('user')
         const userId = user.id
         interaction.editReply(`:white_check_mark: <@${userId}>`)
+        action(user)
     }    
 }
