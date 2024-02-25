@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const { getSettingName } = require('../modules/settings-name');
+const { getSettingDescription } = require('../modules/settings-description');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,11 +28,12 @@ module.exports = {
 
                 for (const key in settings) {
                       if (Object.hasOwnProperty.call(settings, key)) {
-                        console.log(settings, key)
+                        // console.log(settings, key)
                         const value = settings[key];
                         const emoji = value ? ':white_check_mark:' : ':x:';
-                        const description = value ? 'Enabled' : 'Disabled';
-                        settingsEmbed.addFields({ name: `${emoji} ${key}`, value: description });
+                        const name = getSettingName(key);
+                        const description = getSettingDescription(key)
+                        settingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
                     }
                 }
                     
