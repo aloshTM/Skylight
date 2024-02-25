@@ -1,0 +1,23 @@
+{
+  "name": "zeroium",
+  "version": "1.0.0",
+  "description": "A Discord bot that attempts to make the moderating experience as smooth as possible.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aloshTM/Zeroium.git"
+  },
+  "author": "aloshTM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aloshTM/Zeroium/issues"
+  },
+  "homepage": "https://github.com/aloshTM/Zeroium#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5"
+  }
+}
