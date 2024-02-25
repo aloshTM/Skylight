@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require('fs');
+const path = require('node:path')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,10 +8,13 @@ module.exports = {
         .setDescription('Configure the settings of this bot.'),
     async execute(interaction) {
         await interaction.reply(":thinking:");
-        fs.readFile('settings.json', 'utf8', (err, data) => {
+
+        const settingsPath = path.join(__dirname, '..', 'settings.json');
+
+        fs.readFile(settingsPath, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
-                interaction.followUp('Failed to read settings. Please try again later.');
+                interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
                 return;
             }
             try {
