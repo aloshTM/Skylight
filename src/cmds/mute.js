@@ -33,7 +33,7 @@ module.exports = {
             }
 
             if (user.id === moderator.id | user.bot) {
-                interaction.editReply("You can\'t mute this user.")
+                interaction.editReply(settings.verbose ? "You can't mute this user." : ':x:');
                 return
             }
 
