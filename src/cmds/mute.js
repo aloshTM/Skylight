@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js')
 const action = require('../modules/actions/mute-action')
 const fs = require('node:fs')
 const path = require('node:path')
@@ -16,8 +16,12 @@ module.exports = {
         await interaction.reply(":thinking:")
         const user = interaction.options.getUser('user')
         const member = interaction.options.getMember('user')
-        const userId = user.id
         const settingsPath = path.join(__dirname, '..', 'settings.json');
+
+        const Verbose = new EmbedBuilder()
+            .setTitle(':white_check_mark: Success!')
+            .setDescription(`You have successfully muted <@${user.id}>`)
+            .setColor('#29f50a')
 
         fs.readFile(settingsPath, 'utf8', (err, data) => {
             if (err) {
@@ -29,7 +33,7 @@ module.exports = {
                 const settings = JSON.parse(data);
                 const description = 'Allow the bot to reply detailed messages of what happened instead of just emojis.'
 
-                interaction.followUp( settings.verbose ? 'test' : ':white_check_mark:');
+                interaction.followUp( settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
             } catch (error) {
                 console.error(error);
                 interaction.editReply('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
