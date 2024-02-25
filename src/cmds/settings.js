@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
-const path = require('node:path')
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,21 +15,27 @@ module.exports = {
         fs.readFile(settingsPath, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
-                interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
+                interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
                 return;
             }
             try {
                 const settings = JSON.parse(data);
-                const emoji = settings.verbose ? ':white_check_mark:' : ':x:';
-                const description = 'Allow the bot to reply detailed messages of what happened instead of just emojis.'
-    
                 let settingsEmbed = new EmbedBuilder()
-                    .setTitle(":wrench: Settings")
-                    .setDescription(`${emoji} **Verbose Messages**\n${description}`);
+                    .setTitle(":wrench: Settings");
+                
+                for (const key in settings) {
+                    if (Object.hasOwnProperty.call(settings, key)) {
+                        const value = settings[key];
+                        const emoji = value ? ':white_check_mark:' : ':x:';
+                        const description = value ? 'Enabled' : 'Disabled';
+                        settingsEmbed.addField(`${emoji} ${key}`, description);
+                    }
+                }
+    
                 interaction.followUp({ embeds: [settingsEmbed] });
             } catch (error) {
                 console.error(error);
-                interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
+                interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
             }
         });
     }    
