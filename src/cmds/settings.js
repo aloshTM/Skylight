@@ -1,11 +1,12 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 const path = require('node:path')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('settings')
-        .setDescription('Configure the settings of this bot.'),
+        .setDescription('Configure the settings of this bot.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async execute(interaction) {
         await interaction.reply(":thinking:");
 
