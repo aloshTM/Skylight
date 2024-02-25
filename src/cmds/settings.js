@@ -6,13 +6,9 @@ module.exports = {
         .setDescription('Configure the settings of this bot.'),
     async execute(interaction) {
         await interaction.reply(":thinking:")
-        let wait = new EmbedBuilder()
+        let settingsEmbed = new EmbedBuilder()
             .setTitle(":wrench: Settings")
-            .setDescription(":thinking:")
-        interaction.followUp({ embeds: [wait] })
-        let SettingsEmbed = new EmbedBuilder()
-        .setTitle(":wrench: Settings")
-        .setDescription("lol skibidi placeholder")
-        interaction.editReply({ embeds: [SettingsEmbed] })   
+            .setDescription(":")
+        interaction.followUp({ embeds: [settingsEmbed] })
     }    
 }
