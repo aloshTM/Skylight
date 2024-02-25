@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
 const action = require('../modules/actions/mute-action');
 const fs = require('fs');
 const path = require('path');
@@ -19,30 +19,29 @@ module.exports = {
         const member = interaction.options.getMember('user')
         const settingsPath = path.join(__dirname, '..', 'settings.json');
 
-        const Verbose = new E()
-        .setTitle(':white_check_mark: Success!')
-        .setDescription(`You have successfully muted <@${user.id}>`)
-        .setColor('#29f50a');
+        const Verbose = new EmbedBuilder()
+            .setTitle(':white_check_mark: Success!')
+            .setDescription(`You have successfully muted <@${user.id}>`)
+            .setColor('#29f50a');
 
-    fs.readFile(settingsPath, 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
-        }
-        try {
-            const settings = JSON.parse(data);
-            try {
-                action(member); 
-                interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
-            } catch (error) {
-                console.log(error);
-                interaction.followUp("We're sorry, but there was an error muting this user.");
+        fs.readFile(settingsPath, 'utf8', (err, data) => {
+            if (err) {
+                console.error(err);
+                return interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
             }
-        } catch (error) {
-            console.error(error);
-            interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
-        }
-    });
-
-}
+            try {
+                const settings = JSON.parse(data);
+                try {
+                    action(member); 
+                    interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
+                } catch (error) {
+                    console.log(error);
+                    interaction.followUp("We're sorry, but there was an error muting this user.");
+                }
+            } catch (error) {
+                console.error(error);
+                interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
+            }
+        });
+    }
 };
