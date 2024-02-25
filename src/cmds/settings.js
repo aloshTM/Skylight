@@ -13,6 +13,7 @@ module.exports = {
         const settingsPath = path.join(__dirname, '..', 'settings.json');
 
         fs.readFile(settingsPath, 'utf8', (err, data) => {
+            console.log(data)
             if (err) {
                 console.error(err);
                 interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
@@ -22,15 +23,17 @@ module.exports = {
                 const settings = JSON.parse(data);
                 let settingsEmbed = new EmbedBuilder()
                     .setTitle(":wrench: Settings");
-                
+
                 for (const key in settings) {
-                    if (Object.hasOwnProperty.call(settings, key)) {
+                      if (Object.hasOwnProperty.call(settings, key)) {
+                        console.log(settings, key)
                         const value = settings[key];
                         const emoji = value ? ':white_check_mark:' : ':x:';
                         const description = value ? 'Enabled' : 'Disabled';
-                        settingsEmbed.addField(`${emoji} ${key}`, description);
+                        settingsEmbed.addFields({ name: `${emoji} ${key}`, value: description });
                     }
                 }
+                    
     
                 interaction.followUp({ embeds: [settingsEmbed] });
             } catch (error) {
