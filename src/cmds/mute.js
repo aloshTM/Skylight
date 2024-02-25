@@ -2,8 +2,8 @@ const { SlashCommandBuilder } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ban')
-        .setDescription('test'),
+        .setName('mute')
+        .setDescription('Disallows the user to interact with the guild.'),
     async execute(interaction) {
         interaction.reply("test")
     }    
