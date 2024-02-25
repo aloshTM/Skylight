@@ -19,6 +19,7 @@ module.exports = {
         const user = interaction.options.getUser('user');
         const member = interaction.options.getMember('user')
         const settingsPath = path.join(__dirname, '..', 'settings.json');
+        const moderator = interaction.user
 
         const Verbose = new EmbedBuilder()
             .setTitle(':white_check_mark: Success!')
@@ -30,6 +31,12 @@ module.exports = {
                 console.error(err);
                 return interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
             }
+
+            if (user.id === moderator.id | user.bot) {
+                interaction.editReply("You can\'t mute this user.")
+                return
+            }
+
             try {
                 const settings = JSON.parse(data);
                 try {
@@ -38,6 +45,7 @@ module.exports = {
                 } catch (error) {
                     console.log(error);
                     interaction.followUp("We're sorry, but there was an error muting this user.");
+                    return
                 }
             } catch (error) {
                 console.error(error);
