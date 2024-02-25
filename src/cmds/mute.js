@@ -13,6 +13,6 @@ module.exports = {
         interaction.reply(":thinking:")
         const user = interaction.options.getUser('user')
         const userId = user.id
-        interaction.reply(`:white_check_mark: <@${userId}>`)
+        interaction.editReply(`:white_check_mark: <@${userId}>`)
     }    
 }
