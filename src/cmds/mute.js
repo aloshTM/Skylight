@@ -45,7 +45,7 @@ module.exports = {
                     interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
                 } catch (error) {
                     console.log(error);
-                    interaction.followUp("We're sorry, but there was an error muting this user.");
+                    interaction.followUp(settings.verbose ? "We're sorry, but there was an error muting this user." : ":x:");
                     return
                 }
             } catch (error) {

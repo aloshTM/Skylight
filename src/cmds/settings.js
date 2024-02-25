@@ -37,7 +37,8 @@ module.exports = {
                     }
                 }
                     
-    
+                // TODO make the settings configurable
+
                 interaction.followUp({ embeds: [settingsEmbed] });
             } catch (error) {
                 console.error(error);
