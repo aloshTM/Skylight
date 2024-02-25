@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const action = require('../modules/actions/mute-action');
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +11,8 @@ module.exports = {
             option
                 .setName("user")
                 .setDescription("Which user would you like to mute?")
-                .setRequired(true)),
+                .setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async execute(interaction) {
         await interaction.reply(":thinking:"); 
 
