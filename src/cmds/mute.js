@@ -13,8 +13,9 @@ module.exports = {
     async execute(interaction) {
         await interaction.reply(":thinking:")
         const user = interaction.options.getUser('user')
+        const member = interaction.options.getMember('user')
         const userId = user.id
         interaction.editReply(`:white_check_mark: <@${userId}>`)
-        action(user)
+        action(member)
     }    
 }
