@@ -1,5 +1,5 @@
 # Info
-A Discord bot which attempts to make the moderating experience as smooth as possible. <br>
+A free, open source Discord bot that makes the moderation job much easier. 
 
 ### Includes: 
 TODO when you actually make some features
