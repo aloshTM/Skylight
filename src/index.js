@@ -7,7 +7,8 @@ const token = process.env.DISCORD_TOKEN;
 const appId = process.env.APP_ID;
 const guildId = process.env.GUILD_ID;
 
-// console.log(token);
+console.log(process.env.DISCORD_TOKEN);
+console.log(token);
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
