@@ -12,6 +12,11 @@ module.exports = {
                 .setName("user")
                 .setDescription("Which user would you like to mute?")
                 .setRequired(true))
+        .addStringOption(option =>
+            option
+                .setName("duration")
+                .setDescription("How long do you want the user to be muted for?")
+                .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async execute(interaction) {
         await interaction.reply(":thinking:"); 
