@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aloshTM/Zeroium.git"
+    "url": "git+https://github.com/aloshTM/Skylight.git"
   },
   "author": "aloshTM",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aloshTM/Zeroium/issues"
+    "url": "https://github.com/aloshTM/Skylight/issues"
   },
-  "homepage": "https://github.com/aloshTM/Zeroium#readme",
+  "homepage": "https://github.com/aloshTM/Skylight#readme",
   "dependencies": {
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
