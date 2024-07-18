@@ -43,8 +43,24 @@ module.exports = {
                     }
                 }
 
-                // const send = 
-                await interaction.followUp({ embeds: [settingsEmbed], components: [buttonRow] });
+                const message = await interaction.followUp({ embeds: [settingsEmbed], components: [buttonRow] });
+
+                const filter = (i) => i.user.id === interaction.user.id;
+
+                const collector = message.createMessageComponentCollector({ filter, time: 60000 });
+
+                collector.on('collect', async (i) => {
+                    if (i.customId === 'configure') {
+                        let updatedSettingsEmbed = new EmbedBuilder()
+                            .setTitle(":wrench: Configure Settings")
+                            .setDescription("Please choose an option to configure.");
+                        await i.update({ embeds: [updatedSettingsEmbed], components: [] });
+                    } else {
+                        await i.reply('Unknown button clicked.');
+                    }
+                });
+
+                collector.on('end', collected => console.log(`Collected ${collected.size} items`));
 
             } catch (error) {
                 console.error(error);
