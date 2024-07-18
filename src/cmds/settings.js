@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, PermissionFlagsBits, ButtonStyle, Embed } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { getSettingName } = require('../modules/settings-name');
@@ -10,23 +10,22 @@ module.exports = {
         .setDescription('Configure the settings of this bot.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async execute(interaction) {
-        await interaction.reply(":thinking:");
+        await interaction.deferReply(); 
 
         const settingsPath = path.join(__dirname, '..', 'settings.json');
 
         const configure = new ButtonBuilder()
             .setCustomId("configure")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("⚙️")
+            .setEmoji("⚙️");
 
         const buttonRow = new ActionRowBuilder()
-			.addComponents(configure);    
+            .addComponents(configure);    
 
-        fs.readFile(settingsPath, 'utf8', (err, data) => {
-            console.log(data)
+        fs.readFile(settingsPath, 'utf8', async (err, data) => { 
             if (err) {
                 console.error(err);
-                interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
+                await interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
                 return;
             }
             try {
@@ -35,22 +34,21 @@ module.exports = {
                     .setTitle(":wrench: Settings");
 
                 for (const key in settings) {
-                      if (Object.hasOwnProperty.call(settings, key)) {
-                        // console.log(settings, key)
+                    if (Object.hasOwnProperty.call(settings, key)) {
                         const value = settings[key];
                         const emoji = value ? ':white_check_mark:' : ':x:';
                         const name = getSettingName(key);
-                        const description = getSettingDescription(key)
+                        const description = getSettingDescription(key);
                         settingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
                     }
                 }
-                    
-                // TODO make the settings configurable
 
-                interaction.followUp({ embeds: [settingsEmbed], components: [buttonRow], });
+                // const send = 
+                await interaction.followUp({ embeds: [settingsEmbed], components: [buttonRow] });
+
             } catch (error) {
                 console.error(error);
-                interaction.followUp('Failed to read `settings.json`. Please tell the guild owner to fix this.');
+                await interaction.followUp('Failed to parse `settings.json`. Please tell the guild owner to fix this.');
             }
         });
     }    
