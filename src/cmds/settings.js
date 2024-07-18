@@ -37,8 +37,13 @@ module.exports = {
             .setStyle(ButtonStyle.Secondary)
             .setEmoji("🔄");
         
+        const save = new ButtonBuilder()
+            .setCustomId("save")
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji("💾");
+        
         const configureSettingsRow = new ActionRowBuilder()
-            .addComponents(configure, down, up, toggle);
+            .addComponents(save, down, up, toggle);
 
         // there could DEFINITELY be a beter way to do this but i cba rn
 
@@ -75,6 +80,22 @@ module.exports = {
                 const finished = new EmbedBuilder()
                     .setTitle(":gear: Settings")
                     .setDescription("Settings have been configured.");
+                
+                let updatedSettingsEmbed = new EmbedBuilder()
+                    .setTitle(":wrench: Configure Settings")
+                    .setDescription("Please choose an option to configure.");
+                settingsKeys.forEach((key, index) => {
+                    const value = settings[key];
+                    const emoji = value ? ':white_check_mark:' : ':x:';
+                    const name = getSettingName(key);
+                    const description = getSettingDescription(key);
+                    if (index === currentSelectionIndex) {
+                        updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
+                    } else {
+                        updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
+                    }
+                });
+
 
                 collector.on('collect', async (i) => {
                     try {
@@ -93,30 +114,16 @@ module.exports = {
                                 settings[settingKey] = !settings[settingKey];
                             }
                         } else if (i.customId === 'configure') {
+                            isSettingsDisplayed = true;
+                            await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
+                        } else if (i.customId === 'save') {
                             if (isSettingsDisplayed) {
                                 await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2));
                                 isSettingsDisplayed = false;
-                                console.log("settings shouldve saved");
+                                console.log("Settings have been saved.");
                                 await i.update({ embeds: [finished], components: [] });
-                            } else {
-                                // await i.update({ embeds: [finished], components: [] });
                             }
                         }
-
-                        let updatedSettingsEmbed = new EmbedBuilder()
-                            .setTitle(":wrench: Configure Settings")
-                            .setDescription("Please choose an option to configure.");
-                        settingsKeys.forEach((key, index) => {
-                            const value = settings[key];
-                            const emoji = value ? ':white_check_mark:' : ':x:';
-                            const name = getSettingName(key);
-                            const description = getSettingDescription(key);
-                            if (index === currentSelectionIndex) {
-                                updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
-                            } else {
-                                updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
-                            }
-                        });
 
                         await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                     } catch (error) {
