@@ -88,8 +88,8 @@ module.exports = {
                         const settingsKeys = Object.keys(settings);
 
                         let updatedSettingsEmbed = new EmbedBuilder()
-                        .setTitle(":wrench: Configure Settings")
-                        .setDescription("Please choose an option to configure.");
+                            .setTitle(":wrench: Configure Settings")
+                            .setDescription("Please choose an option to configure.");
                         settingsKeys.forEach((key, index) => {
                             const value = settings[key];
                             const emoji = value ? ':white_check_mark:' : ':x:';
@@ -111,6 +111,7 @@ module.exports = {
                             if (isSettingsDisplayed) {
                                 const settingKey = settingsKeys[currentSelectionIndex];
                                 settings[settingKey] = !settings[settingKey];
+                                await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                             }
                         } else if (i.customId === 'configure') {
                             isSettingsDisplayed = true;
@@ -124,7 +125,6 @@ module.exports = {
                             }
                         }
 
-                        await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                     } catch (error) {
                         console.error(error);
                         await i.reply('Failed to parse `settings.json`. Please tell the guild owner to fix this.');
