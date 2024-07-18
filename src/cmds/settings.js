@@ -69,48 +69,51 @@ module.exports = {
 
                 const collector = message.createMessageComponentCollector({ filter, time: 60000 });
 
+                let currentSelectionIndex = 0;
+                let isSettingsDisplayed = false;
+
                 collector.on('collect', async (i) => {
-                    if (i.customId === 'configure') {
-                        fs.readFile(settingsPath, 'utf8', async (err, data) => {
-                            if (err) {
-                                console.error(err);
-                                await i.reply('Failed to re-read `settings.json`. Please tell the guild owner to fix this.');
-                                return;
+                    try {
+                        const data = await fs.promises.readFile(settingsPath, 'utf8');
+                        const settings = JSON.parse(data);
+                        const settingsKeys = Object.keys(settings);
+
+                        if (i.customId === 'down' || i.customId === 'up') {
+                            isSettingsDisplayed = true;
+                            currentSelectionIndex = i.customId === 'down' ?
+                                (currentSelectionIndex + 1) % settingsKeys.length :
+                                (currentSelectionIndex - 1 + settingsKeys.length) % settingsKeys.length;
+                        } else if (i.customId === 'toggle') {
+                            if (isSettingsDisplayed) {
+                                const settingKey = settingsKeys[currentSelectionIndex];
+                                settings[settingKey] = !settings[settingKey];
                             }
-                            try {
-                                const settings = JSON.parse(data);
-                                let updatedSettingsEmbed = new EmbedBuilder()
-                                    .setTitle(":wrench: Configure Settings")
-                                    .setDescription("Please choose an option to configure.");
-                                let isFirstSetting = true;
-                                for (const key in settings) {
-                                    if (Object.hasOwnProperty.call(settings, key)) {
-                                        const value = settings[key];
-                                        const emoji = value ? ':white_check_mark:' : ':x:';
-                                        const name = getSettingName(key);
-                                        const description = getSettingDescription(key);
-                                        if (isFirstSetting) {
-                                            updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
-                                            isFirstSetting = false;
-                                        } else {
-                                            updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
-                                        }
-                                    }
-                                }
-                                await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
-                            } catch (error) {
-                                console.error(error);
-                                await i.reply('Failed to parse `settings.json` on re-read. Please tell the guild owner to fix this.');
+                        } else if (i.customId === 'configure') {
+                            if (isSettingsDisplayed) {
+                                await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2));
+                                isSettingsDisplayed = false;
+                            }
+                        }
+
+                        let updatedSettingsEmbed = new EmbedBuilder()
+                            .setTitle(":wrench: Configure Settings")
+                            .setDescription("Please choose an option to configure.");
+                        settingsKeys.forEach((key, index) => {
+                            const value = settings[key];
+                            const emoji = value ? ':white_check_mark:' : ':x:';
+                            const name = getSettingName(key);
+                            const description = getSettingDescription(key);
+                            if (index === currentSelectionIndex) {
+                                updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
+                            } else {
+                                updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
                             }
                         });
-                    } else {
-                        await i.reply('Unknown button clicked.');
-                    }
-                });
 
-                collector.on('end', async (collected, reason) => {
-                    if (reason === 'time') {
-                        await message.edit({ embeds: [settingsEmbed], components: [buttonRow] });
+                        await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
+                    } catch (error) {
+                        console.error(error);
+                        await i.reply('Failed to read or write `settings.json`. Please tell the guild owner to fix this.');
                     }
                 });
 
