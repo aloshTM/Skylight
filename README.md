@@ -1,5 +1,7 @@
-# Info
-A free, open source Discord bot that makes the moderation job much easier. 
+<div align=center>
+  <h1>Skylight</h1>
+  <p>A free, open source Discord bot that makes the moderation job much easier. </p>
+</div>    
 
 ## Includes: 
 - ⚙️ Configurable settings
