@@ -96,8 +96,9 @@ module.exports = {
                             if (isSettingsDisplayed) {
                                 await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2));
                                 isSettingsDisplayed = false;
-                            } else {
                                 await i.update({ embeds: [finished], components: [] });
+                            } else {
+                                // await i.update({ embeds: [finished], components: [] });
                             }
                         }
 
