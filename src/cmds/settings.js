@@ -42,6 +42,9 @@ module.exports = {
 
         // there could DEFINITELY be a beter way to do this but i cba rn
 
+        let currentSelectionIndex = 0;
+        let isSettingsDisplayed = false;
+
         fs.readFile(settingsPath, 'utf8', async (err, data) => { 
             if (err) {
                 console.error(err);
@@ -64,6 +67,7 @@ module.exports = {
                 }
 
                 const message = await interaction.followUp({ embeds: [settingsEmbed], components: [configureRow] });
+                isSettingsDisplayed = true;
 
                 const filter = (i) => i.user.id === interaction.user.id;
 
@@ -72,9 +76,6 @@ module.exports = {
                 const finished = new EmbedBuilder()
                     .setTitle(":gear: Settings")
                     .setDescription("Settings have been configured.");
-
-                let currentSelectionIndex = 0;
-                let isSettingsDisplayed = false;
 
                 collector.on('collect', async (i) => {
                     try {
@@ -96,6 +97,7 @@ module.exports = {
                             if (isSettingsDisplayed) {
                                 await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2));
                                 isSettingsDisplayed = false;
+                                console.log("settings shouldve saved");
                                 await i.update({ embeds: [finished], components: [] });
                             } else {
                                 // await i.update({ embeds: [finished], components: [] });
