@@ -72,7 +72,8 @@ module.exports = {
                 }
 
                 const message = await interaction.followUp({ embeds: [settingsEmbed], components: [configureRow] });
-                
+                isSettingsDisplayed = true;
+
                 const filter = (i) => i.user.id === interaction.user.id;
 
                 const collector = message.createMessageComponentCollector({ filter, time: 60000 });
@@ -105,13 +106,14 @@ module.exports = {
                         if (i.customId === 'down' || i.customId === 'up') {
                             isSettingsDisplayed = true;
                             currentSelectionIndex = i.customId === 'down' ?
-                                (currentSelectionIndex + 1) % settingsKeys.length :
-                                (currentSelectionIndex - 1 + settingsKeys.length) % settingsKeys.length;
+                            (currentSelectionIndex + 1) % settingsKeys.length :
+                            (currentSelectionIndex - 1 + settingsKeys.length) % settingsKeys.length;
+                            await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                         } else if (i.customId === 'toggle') {
                             if (isSettingsDisplayed) {
+                                console.log("attempting to toggle setting");
                                 const settingKey = settingsKeys[currentSelectionIndex];
                                 settings[settingKey] = !settings[settingKey];
-                                await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                             }
                         } else if (i.customId === 'configure') {
                             isSettingsDisplayed = true;
