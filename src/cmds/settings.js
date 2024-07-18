@@ -80,28 +80,27 @@ module.exports = {
                 const finished = new EmbedBuilder()
                     .setTitle(":gear: Settings")
                     .setDescription("Settings have been configured.");
-                
-                let updatedSettingsEmbed = new EmbedBuilder()
-                    .setTitle(":wrench: Configure Settings")
-                    .setDescription("Please choose an option to configure.");
-                settingsKeys.forEach((key, index) => {
-                    const value = settings[key];
-                    const emoji = value ? ':white_check_mark:' : ':x:';
-                    const name = getSettingName(key);
-                    const description = getSettingDescription(key);
-                    if (index === currentSelectionIndex) {
-                        updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
-                    } else {
-                        updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
-                    }
-                });
-
 
                 collector.on('collect', async (i) => {
                     try {
                         const data = await fs.promises.readFile(settingsPath, 'utf8');
                         const settings = JSON.parse(data);
                         const settingsKeys = Object.keys(settings);
+
+                        let updatedSettingsEmbed = new EmbedBuilder()
+                        .setTitle(":wrench: Configure Settings")
+                        .setDescription("Please choose an option to configure.");
+                        settingsKeys.forEach((key, index) => {
+                            const value = settings[key];
+                            const emoji = value ? ':white_check_mark:' : ':x:';
+                            const name = getSettingName(key);
+                            const description = getSettingDescription(key);
+                            if (index === currentSelectionIndex) {
+                                updatedSettingsEmbed.addFields({ name: `[${emoji}] ${name}`, value: `${description}\n` });
+                            } else {
+                                updatedSettingsEmbed.addFields({ name: `${emoji} ${name}`, value: `${description}\n` });
+                            }
+                        });
 
                         if (i.customId === 'down' || i.customId === 'up') {
                             isSettingsDisplayed = true;
