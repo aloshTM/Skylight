@@ -69,6 +69,10 @@ module.exports = {
 
                 const collector = message.createMessageComponentCollector({ filter, time: 60000 });
 
+                const finished = new EmbedBuilder()
+                    .setTitle(":gear: Settings")
+                    .setDescription("Settings have been configured.");
+
                 let currentSelectionIndex = 0;
                 let isSettingsDisplayed = false;
 
@@ -92,6 +96,8 @@ module.exports = {
                             if (isSettingsDisplayed) {
                                 await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2));
                                 isSettingsDisplayed = false;
+                            } else {
+                                await i.update({ embeds: [finished], components: [] });
                             }
                         }
 
@@ -113,7 +119,7 @@ module.exports = {
                         await i.update({ embeds: [updatedSettingsEmbed], components: [configureSettingsRow] });
                     } catch (error) {
                         console.error(error);
-                        await i.reply('Failed to read or write `settings.json`. Please tell the guild owner to fix this.');
+                        await i.reply('Failed to parse `settings.json`. Please tell the guild owner to fix this.');
                     }
                 });
 
