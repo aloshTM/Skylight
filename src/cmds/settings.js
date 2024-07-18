@@ -67,8 +67,7 @@ module.exports = {
                 }
 
                 const message = await interaction.followUp({ embeds: [settingsEmbed], components: [configureRow] });
-                isSettingsDisplayed = true;
-
+                
                 const filter = (i) => i.user.id === interaction.user.id;
 
                 const collector = message.createMessageComponentCollector({ filter, time: 60000 });
