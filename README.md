@@ -4,7 +4,6 @@
 </div>    
 
 ## Includes: 
-- ⚙️ Configurable settings
 - uhhh
 
 ## TODO/What's coming
