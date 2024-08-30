@@ -27,6 +27,9 @@ module.exports = {
 
         const user = interaction.options.getUser('user');
         const member = interaction.options.getMember('user')
+        // apparently these two are different (i have no idea how but someone fix this later) - alosh
+        const reason = interaction.options.getString('reason');
+        const duration = interaction.options.getString('duration');
         const settingsPath = path.join(__dirname, '..', 'settings.json');
         const moderator = interaction.user
 
