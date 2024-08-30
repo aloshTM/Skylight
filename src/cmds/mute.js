@@ -17,6 +17,10 @@ module.exports = {
                 .setName("duration")
                 .setDescription("How long do you want the user to be muted for?")
                 .setRequired(true))
+        .addStringOption(option =>
+            option
+                .setName("reason")
+                .setDescription("Why do you want to mute this user?"))        
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async execute(interaction) {
         await interaction.reply(":thinking:"); 
@@ -41,19 +45,23 @@ module.exports = {
                 const settings = JSON.parse(data);
 
                 if (user.id === moderator.id | user.bot) {
+                    // discord api literally does not allow you to do this
                     interaction.editReply(settings.verbose ? "You can't mute this user." : ':x:');
                     return
                 }
 
                 try {
+                    // attempt mute action
                     action(member); 
                     interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
                 } catch (error) {
+                    // something went wrong. notify user.
                     console.log(error);
                     interaction.followUp(settings.verbose ? "We're sorry, but there was an error muting this user." : ":x:");
                     return
                 }
             } catch (error) {
+                // Dumbass
                 console.error(error);
                 interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
             }
