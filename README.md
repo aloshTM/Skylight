@@ -4,14 +4,13 @@
 </div>    
 
 ## Includes: 
-- ⚙️ Configurable settings
 - uhhh
 
 ## TODO/What's coming
 - Logging of moderation action based on the setting
 - Configure every setting 
 - Button collectors (handling of button presses)
-- Parse mute reason/duration
+- Parsing moderation commands reason/duration
 - Every moderation command (ban, kick, modlogs, etc)
 
 ### Prerequisites 
