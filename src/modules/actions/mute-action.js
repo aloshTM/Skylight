@@ -5,15 +5,15 @@ module.exports = (target, duration, reason = null) => {
 
     const durationMatch = duration.match(/^(\d+)([hmdw])$/i);
 
-		if (!durationMatch) {
-			interaction.reply(':x: Please provide a valid duration in the format of (number)h, (number)m, (number)d, or (number)w. :pensive:');
-			return;
-		}
+	if (!durationMatch) {
+		interaction.reply(':x: Please provide a valid duration in the format of (number)h, (number)m, (number)d, or (number)w. :pensive:');
+		return;
+	}
 
-		const durationValue = parseInt(durationMatch[1]);
-		const durationType = durationMatch[2];
-		let durationMs = 0;
-		let durationWord = '';
+	const durationValue = parseInt(durationMatch[1]);
+	const durationType = durationMatch[2];
+	let durationMs = 0;
+	let durationWord = '';
 
     if (durationType === 'h') {
         durationMs = durationValue * 60 * 60 * 1000;
@@ -29,5 +29,12 @@ module.exports = (target, duration, reason = null) => {
         durationWord = durationValue === 1 ? 'week' : 'weeks';
     }
 
+    console.log(durationValue)
     console.log(durationWord)
+
+    return {
+        data: {
+            durationValue, durationWord
+        }
+    }
 };
