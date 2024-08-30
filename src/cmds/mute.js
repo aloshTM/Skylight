@@ -55,7 +55,7 @@ module.exports = {
 
                 try {
                     // attempt mute action
-                    action(member); 
+                    action(member, duration); 
                     interaction.followUp(settings.verbose ? { embeds: [Verbose] } : ':white_check_mark:');
                 } catch (error) {
                     // something went wrong. notify user.
