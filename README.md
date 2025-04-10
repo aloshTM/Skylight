@@ -29,6 +29,6 @@
 8. Run `npm start` in your terminal. Voila! Your bot is now ready.
 
 # Contributing
-Contributing is very welcome, as currently, I am the only contributor/maintainer of this project. Just shoot me a PR or message me on [Telegram](https://t.me/aloshTM) if you want to discuss any core changes.
+Contributing is very welcome, as currently, I am the only contributor/maintainer of this project. Just shoot me a PR or message me on [Telegram](https://t.me/aloshhTM) if you want to discuss any core changes.
 
 
