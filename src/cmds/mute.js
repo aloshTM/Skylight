@@ -41,7 +41,7 @@ module.exports = {
         fs.readFile(settingsPath, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
-                return interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
+                return interaction.followUp('Failed to parse `settings.json`. Please contact an administrator to fix this.');
             }
 
             try {
@@ -67,7 +67,7 @@ module.exports = {
             } catch (error) {
                 // Dumbass
                 console.error(error);
-                interaction.followUp('Failed to parse `settings.json`. Please contact the guild owner to fix this.');
+                interaction.followUp('Failed to parse `settings.json`. Please contact an administrator to fix this.');
             }
         });
     }
